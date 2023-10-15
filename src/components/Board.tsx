@@ -34,6 +34,7 @@ export default function Board() {
   };
 
   useEffect(() => {
+    if (finished) return;
     const isWin = winningCombos.some((combo) => {
       const [a, b, c] = combo;
       return cells[a] && cells[a] === cells[b] && cells[a] === cells[c];
@@ -52,7 +53,9 @@ export default function Board() {
       <h1 className="text-center text-xl">
         Game {total} -{" "}
         {finished
-          ? `${turn === "circle" ? "X" : "O"} won`
+          ? !cells.includes(null)
+            ? "Draw"
+            : `${turn === "circle" ? "X" : "O"} won`
           : `${turn === "circle" ? "O" : "X"}'s turn`}
       </h1>
       <div className="w-96 h-96 grid grid-cols-3 gap-1">
