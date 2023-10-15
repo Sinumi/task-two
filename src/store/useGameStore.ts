@@ -2,9 +2,10 @@ import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
 
 const initialState = {
+  total: 1,
   finished: false,
-  turn: "cross" as "cross" | "circle",
   cells: Array(9).fill(null),
+  turn: "cross" as "cross" | "circle",
   gameStat: {
     cross: 0,
     circle: 0,
@@ -43,6 +44,7 @@ export const setGameStat = (winner: "cross" | "circle" | "draw") =>
 
 export const playAgain = () =>
   useGameStore.setState((state) => {
+    state.total += 1;
     state.cells = Array(9).fill(null);
     state.turn = "cross";
     return state;
@@ -50,8 +52,9 @@ export const playAgain = () =>
 
 export const resetGame = () =>
   useGameStore.setState((state) => {
-    state.cells = Array(9).fill(null);
+    state.total = 1;
     state.turn = "cross";
+    state.cells = Array(9).fill(null);
     state.gameStat = {
       cross: 0,
       circle: 0,

@@ -23,8 +23,9 @@ const winningCombos = [
 ];
 
 export default function Board() {
-  const cells = useGameStore((state) => state.cells);
   const turn = useGameStore((state) => state.turn);
+  const cells = useGameStore((state) => state.cells);
+  const total = useGameStore((state) => state.total);
   const finished = useGameStore((state) => state.finished);
 
   const handleClick = (index: number) => {
@@ -47,10 +48,23 @@ export default function Board() {
   }, [cells, turn]);
 
   return (
-    <div className="w-96 h-96 grid grid-cols-3 gap-1 my-8">
-      {cells.map((cell, index) => (
-        <Cell key={index} index={index} cell={cell} handleClick={handleClick} />
-      ))}
-    </div>
+    <main className="my-8 space-y-3">
+      <h1 className="text-center text-xl">
+        Game {total} -{" "}
+        {finished
+          ? `${turn === "circle" ? "X" : "O"} won`
+          : `${turn === "circle" ? "O" : "X"}'s turn`}
+      </h1>
+      <div className="w-96 h-96 grid grid-cols-3 gap-1">
+        {cells.map((cell, index) => (
+          <Cell
+            key={index}
+            index={index}
+            cell={cell}
+            handleClick={handleClick}
+          />
+        ))}
+      </div>
+    </main>
   );
 }
