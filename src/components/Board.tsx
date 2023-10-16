@@ -33,18 +33,19 @@ export default function Board() {
     setCells(index, turn);
   };
 
+  const isWin = winningCombos.some((combo) => {
+    const [a, b, c] = combo;
+    return cells[a] && cells[a] === cells[b] && cells[a] === cells[c];
+  });
+
   useEffect(() => {
     if (finished) return;
-    const isWin = winningCombos.some((combo) => {
-      const [a, b, c] = combo;
-      return cells[a] && cells[a] === cells[b] && cells[a] === cells[c];
-    });
     if (isWin) {
-      setFinished(true);
       setGameStat(turn === "circle" ? "cross" : "circle");
-    } else if (!cells.includes(null)) {
       setFinished(true);
+    } else if (!cells.includes(null)) {
       setGameStat("draw");
+      setFinished(true);
     }
   }, [cells, turn]);
 
@@ -53,7 +54,7 @@ export default function Board() {
       <h1 className="text-center text-xl">
         Game {total} -{" "}
         {finished
-          ? !cells.includes(null)
+          ? !cells.includes(null) && !isWin
             ? "Draw"
             : `${turn === "circle" ? "X" : "O"} won`
           : `${turn === "circle" ? "O" : "X"}'s turn`}
